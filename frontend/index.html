@@ -35,6 +35,54 @@
         .btn-show {
             display: none;
         }
+
+        .file-manager {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-manager h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .file-list {
+            max-height: 650px;
+            overflow-y: auto;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            /* 字符串换行 */
+            word-break: break-all;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-item span {
+            font-size: 0.9rem;
+            color: #ffffff;
+            width: 260px;
+        }
+
+        .file-item button {
+            background: none;
+            border: none;
+            color: rgb(170, 179, 244);
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -55,53 +103,76 @@
 </section>
 
 <main class="container" id="form">
-    <div class="agent-item"><img src="/static/gptr-logo.png" class="avatar"
-                                                alt="Auto Agent"></div>
-    <form method="POST" class="mt-3" onsubmit="GPTResearcher.startResearch(); return false;">
-        <div class="form-group">
-            <label for="task" class="agent-question">你希望我接下来研究什么？</label>
-            <input type="text" id="task" name="task" class="form-control" required>
-            <input type="radio" name="agent" id="autoAgent" value="Auto Agent" checked hidden>
-        </div>
-        <div class="form-group">
-            <div class="row">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="agent-item"><img src="/static/gptr-logo.png" class="avatar"
+                                                    alt="Auto Agent"></div>
+            <form method="POST" class="mt-3" onsubmit="GPTResearcher.startResearch(); return false;">
+                <div class="form-group">
+                    <label for="task" class="agent-question">你希望我接下来研究什么？</label>
+                    <input type="text" id="task" name="task" class="form-control" required>
+                    <input type="radio" name="agent" id="autoAgent" value="Auto Agent" checked hidden>
+                </div>
+                <div class="form-group">
+                    <div class="row">
 
 
+                    </div>
+                    <button type="button" id="btnShowAuto" class="btn btn-secondary mt-3 btn-show">Auto Agent</button>
+                </div>
+                <div class="form-group">
+                    <label for="report_type" class="agent-question">您希望我生成哪种类型的报告？</label>
+                    <select name="report_type" class="form-control" required>
+                        <option value="research_report">摘要 - 短而快（~2 分钟）</option>
+                        <option value="detailed_report">详细 - 深度和长度（~5 分钟） </option>
+                        <option value="resource_report">资源报告</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="report_source" class="agent-question">你希望我从哪些来源进行研究？</label>
+                    <p class="text-left mt-0 pt-0" style="font-size: 0.7rem;">您现在也可以对本地文档进行研究。请确保添加指向您的文档文件夹的 DOC_PATH env 变量。</p>
+                    <select name="report_source" class="form-control" required>
+                        <option value="web">网络</option>
+                        <option value="local">我的文档</option>
+                    </select>
+                </div>
+                <input type="submit" value="Research" class="btn btn-primary button-padding">
+            </form>
+
+            <div class="margin-div">
+                <h2>Agent Output</h2>
+                <p class="mt-2 text-left" style="font-size: 0.8rem;">专为您的任务量身定制的代理 将生成以提供最精确和最相关的研究结果。</p>
+                <div id="output"></div>
             </div>
-            <button type="button" id="btnShowAuto" class="btn btn-secondary mt-3 btn-show">Auto Agent</button>
+            <div class="margin-div">
+                <h2>Research Report</h2>
+                <div id="reportContainer"></div>
+                <div id="reportActions">
+                    <div class="alert alert-info" role="alert" id="status"></div>
+                    <a id="copyToClipboard" onclick="GPTResearcher.copyToClipboard()" class="btn btn-secondary mt-3" style="margin-right: 10px;">复制到剪贴板</a>
+                    <a id="downloadLink" href="#" class="btn btn-secondary mt-3" style="margin-right: 10px;" target="_blank">下载PDF</a>
+                    <a id="downloadLinkWord" href="#" class="btn btn-secondary mt-3" target="_blank">下载Docx</a>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="report_type" class="agent-question">您希望我生成哪种类型的报告？</label>
-            <select name="report_type" class="form-control" required>
-                <option value="research_report">摘要 - 短而快（~2 分钟）</option>
-                <option value="detailed_report">详细 - 深度和长度（~5 分钟） </option>
-                <option value="resource_report">资源报告</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="report_source" class="agent-question">你希望我从哪些来源进行研究？</label>
-            <p class="text-left mt-0 pt-0" style="font-size: 0.7rem;">您现在也可以对本地文档进行研究。请确保添加指向您的文档文件夹的 DOC_PATH env 变量。</p>
-            <select name="report_source" class="form-control" required>
-                <option value="web">网络</option>
-                <option value="local">我的文档</option>
-            </select>
-        </div>
-        <input type="submit" value="Research" class="btn btn-primary button-padding">
-    </form>
 
-    <div class="margin-div">
-        <h2>Agent Output</h2>
-        <p class="mt-2 text-left" style="font-size: 0.8rem;">专为您的任务量身定制的代理 将生成以提供最精确和最相关的研究结果。</p>
-        <div id="output"></div>
-    </div>
-    <div class="margin-div">
-        <h2>Research Report</h2>
-        <div id="reportContainer"></div>
-        <div id="reportActions">
-            <div class="alert alert-info" role="alert" id="status"></div>
-            <a id="copyToClipboard" onclick="GPTResearcher.copyToClipboard()" class="btn btn-secondary mt-3" style="margin-right: 10px;">复制到剪贴板</a>
-            <a id="downloadLink" href="#" class="btn btn-secondary mt-3" style="margin-right: 10px;" target="_blank">下载PDF</a>
-            <a id="downloadLinkWord" href="#" class="btn btn-secondary mt-3" target="_blank">下载Docx</a>
+        <div class="col-lg-4">
+            <div class="file-manager">
+                <h2>文件管理</h2>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="fileInput">上传文件</label>
+                        <input type="file" id="fileInput" name="files" class="form-control" required multiple>
+                    </div>
+                    <button type="submit" class="btn btn-primary">上传</button>
+                </form>
+                <div class="file-list" id="fileList">
+                    <!-- 文件列表将在这里显示 -->
+                </div>
+                <div class="pagination" id="pagination">
+                    <!-- 分页按钮将在这里显示 -->
+                </div>
+            </div>
         </div>
     </div>
 </main>
@@ -133,6 +204,83 @@
         btnChoose.style.display = 'inline-block';
         autoAgentDiv.style.display = 'flex';
         agentChoices[0].style.display = 'none';
+    });
+
+    // 文件管理功能
+    const fileManager = (() => {
+        const fileList = document.getElementById('fileList');
+        const pagination = document.getElementById('pagination');
+        const uploadForm = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('fileInput');
+
+        const fetchFiles = async (page = 1) => {
+            const response = await fetch(`/files?page=${page}`);
+            const data = await response.json();
+            renderFileList(data.files);
+            renderPagination(data.totalPages, page);
+        };
+
+        const renderFileList = (files) => {
+            fileList.innerHTML = '';
+            files.forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `<span>${file.name}</span>
+                                      <button onclick="fileManager.deleteFile('${file.name}')">删除</button>`;
+                fileList.appendChild(fileItem);
+            });
+        };
+
+        const renderPagination = (totalPages, currentPage) => {
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const pageItem = document.createElement('button');
+                pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                pageItem.innerText = i;
+                pageItem.addEventListener('click', () => fetchFiles(i));
+                pagination.appendChild(pageItem);
+            }
+        };
+
+        const uploadFile = async (files) => {
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            const result = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            if (result.ok && result.status === 200 && (await result.json()).code === 200) {
+                alert('文件上传成功！');
+            }
+            fetchFiles();
+        };
+
+        const deleteFile = async (fileName) => {
+            await fetch(`/files/${fileName}`, {
+                method: 'DELETE'
+            });
+            fetchFiles();
+        };
+
+        uploadForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const files = fileInput.files;
+            if (files && files.length > 0) {
+                uploadFile(files);
+            }
+        });
+
+        return {
+            fetchFiles,
+            deleteFile
+        };
+    })();
+
+    // 初始化文件管理器
+    document.addEventListener('DOMContentLoaded', () => {
+        fileManager.fetchFiles();
     });
 </script>
 </body>

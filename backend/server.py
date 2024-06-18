@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from backend.websocket_manager import WebSocketManager
 from backend.utils import write_md_to_pdf, write_md_to_word, write_text_to_md
@@ -24,6 +26,13 @@ templates = Jinja2Templates(directory="./frontend")
 
 manager = WebSocketManager()
 
+# 存储文件的目录
+file_directory = os.getenv("DOC_PATH", "")
+
+# 创建存储文件的目录
+if not os.path.exists(file_directory):
+    os.makedirs(file_directory)
+
 
 # Dynamic directory for outputs once first research is run
 @app.on_event("startup")
@@ -31,6 +40,7 @@ def startup_event():
     if not os.path.isdir("outputs"):
         os.makedirs("outputs")
     app.mount("/outputs", StaticFiles(directory="outputs"), name="outputs")
+    app.mount("/uploads", StaticFiles(directory=file_directory), name="uploads")
 
 @app.get("/")
 async def read_root(request: Request):
@@ -64,3 +74,42 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         await manager.disconnect(websocket)
 
+def save_file(file: UploadFile):
+    file_path = os.path.join(file_directory, file.filename)
+    with open(file_path, "wb") as f:
+        f.write(file.file.read())
+    return file_path
+
+# 文件上传路由
+@app.post("/upload")
+async def upload_file(files: list[UploadFile] = File(...)):
+    print("files:" + ''.join(str(file) for file in files))
+    if not files:
+        raise HTTPException(status_code=400, detail="No files provided")
+    
+    uploaded_files = []
+    for file in files:
+        file_path = save_file(file)
+        uploaded_files.append(file_path)
+    return JSONResponse(content={"code": 200, "message": "Files uploaded successfully", "files": uploaded_files})
+
+# 获取文件列表路由
+@app.get("/files")
+async def list_files(page: int = 1, per_page: int = 10):
+    files = []
+    for filename in os.listdir(file_directory):
+        files.append({"name": filename})
+    total_files = len(files)
+    start = (page - 1) * per_page
+    end = start + per_page
+    return {"files": files[start:end], "totalPages": -(-total_files // per_page)}
+
+# 删除文件路由
+@app.delete("/files/{fileName}")
+async def delete_file(fileName: str):
+    file_path = os.path.join(file_directory, fileName)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        return {"message": f"File '{fileName}' deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail=f"File '{fileName}' not found")
