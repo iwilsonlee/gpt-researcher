@@ -1,7 +1,7 @@
 # dependencies
 beautifulsoup4
 colorama
-duckduckgo_search==5.3.1b1
+duckduckgo_search
 md2pdf
 playwright
 openai
@@ -26,7 +26,7 @@ langchain_google_vertexai
 langchain_fireworks
 langchain_aws
 tiktoken
-tavily-python
+tavily-python==0.3.6
 gpt-researcher
 arxiv
 PyMuPDF
@@ -43,6 +43,7 @@ websockets
 unstructured
 pandas
 json_repair
+exa_py
 
 # uncomment for testing
 # pytest
