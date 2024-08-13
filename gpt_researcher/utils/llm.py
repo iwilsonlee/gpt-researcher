@@ -35,14 +35,17 @@ def get_llm(llm_provider, **kwargs):
             from ..llm_provider import TogetherProvider
             llm_provider = TogetherProvider
         case "huggingface":
-            from ..llm_provider import HugginFaceProvider
-            llm_provider = HugginFaceProvider
+            from ..llm_provider import HuggingFaceProvider
+            llm_provider = HuggingFaceProvider
         case "mistral":
             from ..llm_provider import MistralProvider
             llm_provider = MistralProvider
         case "anthropic":
             from ..llm_provider import AnthropicProvider
             llm_provider = AnthropicProvider
+        case "unify":
+            from ..llm_provider import UnifyProvider
+            llm_provider = UnifyProvider
         # Generic case for all other providers supported by Langchain
         case _:
             from gpt_researcher.llm_provider import GenericLLMProvider
@@ -57,6 +60,7 @@ async def create_chat_completion(
         temperature: float = 1.0,
         max_tokens: Optional[int] = None,
         llm_provider: Optional[str] = None,
+        openai_api_key=None,
         stream: Optional[bool] = False,
         websocket: Any | None = None,
         llm_kwargs: Dict[str, Any] | None = None,
@@ -84,7 +88,7 @@ async def create_chat_completion(
             f"Max tokens cannot be more than 8001, but got {max_tokens}")
 
     # Get the provider from supported providers
-    provider = get_llm(llm_provider, model=model, temperature=temperature, max_tokens=max_tokens, **llm_kwargs)
+    provider = get_llm(llm_provider, model=model, temperature=temperature, max_tokens=max_tokens, **(llm_kwargs or {}))
 
     response = ""
     # create response

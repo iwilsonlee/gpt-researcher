@@ -6,7 +6,8 @@ from .ollama.ollama import OllamaProvider
 from .together.together import TogetherProvider
 from .anthropic.anthropic import AnthropicProvider
 from .mistral.mistral import MistralProvider
-from .huggingface.huggingface import HugginFaceProvider
+from .huggingface.huggingface import HuggingFaceProvider
+from .unify.unify import UnifyProvider
 from .generic import GenericLLMProvider
 
 __all__ = [
@@ -18,6 +19,7 @@ __all__ = [
     "TogetherProvider",
     "AnthropicProvider",
     "MistralProvider",
-    "HugginFaceProvider",
+    "HuggingFaceProvider",
+    "UnifyProvider",
     "GenericLLMProvider",
 ]

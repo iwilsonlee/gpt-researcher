@@ -1,6 +1,8 @@
 langgraph
 gpt_researcher
 langchain-community
+langgraph-cli
 python-dotenv
 weasyprint
 json5
+langgraph_sdk
