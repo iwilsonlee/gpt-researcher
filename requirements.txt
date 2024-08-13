@@ -38,8 +38,7 @@ SQLAlchemy
 mistune
 python-docx
 htmldocx
-lxml
-lxml_html_clean
+lxml[html_clean]
 websockets
 unstructured
 pandas
