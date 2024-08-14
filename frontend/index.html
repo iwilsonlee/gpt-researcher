@@ -237,13 +237,15 @@
         const tagsInput = document.getElementById('tags-input');
         const input = document.getElementById('custom_source');
 
-        input.addEventListener('keypress', function (e) {
-            if ((e.key === 'Enter' || e.key === ",") && input.value !== '') {
-                e.preventDefault();
-                GPTResearcher.addTag(input.value);
-                input.value = '';
-            }
-        });
+        if(input) {
+            input.addEventListener('keypress', function (e) {
+                if ((e.key === 'Enter' || e.key === ",") && input.value !== '') {
+                    e.preventDefault();
+                    GPTResearcher.addTag(input.value);
+                    input.value = '';
+                }
+            });
+        }
     
     // 文件管理功能
     const fileManager = (() => {
