@@ -40,6 +40,7 @@ python-docx
 htmldocx
 lxml_html_clean==0.1.0
 json5
+langgraph
 websockets
 unstructured
 pandas
