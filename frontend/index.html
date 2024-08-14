@@ -35,6 +35,54 @@
         .btn-show {
             display: none;
         }
+
+        .file-manager {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-manager h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .file-list {
+            max-height: 650px;
+            overflow-y: auto;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            /* 字符串换行 */
+            word-break: break-all;
+        }
+
+        .file-item:last-child {
+            border-bottom: none;
+        }
+
+        .file-item span {
+            font-size: 0.9rem;
+            color: #ffffff;
+            width: 260px;
+        }
+
+        .file-item button {
+            background: none;
+            border: none;
+            color: rgb(170, 179, 244);
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -43,26 +91,25 @@
     <section class="landing">
         <div class="max-w-5xl mx-auto text-center">
             <h1 class="text-4xl font-extrabold mx-auto lg:text-7xl">
-                Say Goodbye to <br>
+                告别 <br>
                 <span
-                    style="background-image:linear-gradient(to right, #9867F0, #ED4E50); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Hours
-                    of Research</span>
+                    style="background-image:linear-gradient(to right, #9867F0, #ED4E50); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">耗时的调研</span>
             </h1>
             <p class="max-w-5xl mx-auto text-gray-600 mt-8" style="font-size:20px">
-                Say Hello to GPT Researcher, your AI mate for rapid insights and comprehensive research. GPT Researcher
-                takes care of everything from accurate source gathering to organization of research results - all in one
-                platform designed to make your research process a breeze.
+                这是你的AI伙伴，用于快速洞察和全面调研；这是一个领先的自主代理，负责从精确收集资料到生成研究结果等事务，旨在使您的调研过程变得轻而易举。
             </p>
-            <a href="#form" class="btn btn-primary">Get Started</a>
+            <a href="#form" class="btn btn-primary">开始使用</a>
         </div>
     </section>
 
     <main class="container" id="form">
+        <div class="row">
+            <div class="col-lg-8">
         <div class="agent-item"><img src="/static/gptr-logo.png" class="avatar" alt="Auto Agent"></div>
         <form method="POST" class="mt-3" onsubmit="GPTResearcher.startResearch(); return false;">
             <div class="form-group">
-                <label for="task" class="agent-question">What would you like me to research next?</label>
-                <input id="task" name="task" class="form-control" required></input>
+                <label for="task" class="agent-question">你希望我接下来研究什么？</label>
+                <input type="text" id="task" name="task" class="form-control" required></input>
                 <input type="radio" name="agent" id="autoAgent" value="Auto Agent" checked hidden>
             </div>
             <div class="form-group">
@@ -73,58 +120,44 @@
                 <button type="button" id="btnShowAuto" class="btn btn-secondary mt-3 btn-show">Auto Agent</button>
             </div>
             <div class="form-group">
-                <label for="report_type" class="agent-question">What type of report would you like me to
-                    generate?</label>
+                <label for="report_type" class="agent-question">您希望我生成哪种类型的报告？</label>
                 <select name="report_type" class="form-control" required>
-                    <option value="research_report">Summary - Short and fast (~2 min)</option>
-                    <option value="detailed_report">Detailed - In depth and longer (~5 min)</option>
-                    <option value="resource_report">Resource Report</option>
+                    <option value="research_report">摘要 - 简短而快速（~2 分钟）</option>
+                    <option value="detailed_report">详细 - 长篇幅且深入（~5 分钟） </option>
+                    <option value="resource_report">资源引用报告</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="tone" class="agent-question">In which tone would you like the report to be
-                    generated?</label>
+                <label for="tone" class="agent-question">您希望以哪种语气生成报告?</label>
                 <select name="tone" id="tone" class="form-control" required>
-                    <option value="Objective">Objective - Impartial and unbiased presentation of facts and findings
+                    <option value="Objective">客观(Objective)-对事实和发现进行公正和无偏见的陈述
                     </option>
-                    <option value="Formal">Formal - Adheres to academic standards with sophisticated language and
-                        structure</option>
-                    <option value="Analytical">Analytical - Critical evaluation and detailed examination of data and
-                        theories</option>
-                    <option value="Persuasive">Persuasive - Convincing the audience of a particular viewpoint or
-                        argument</option>
-                    <option value="Informative">Informative - Providing clear and comprehensive information on a topic
+                    <option value="Formal">正式(Formal)-遵循学术标准，语言和结构复杂</option>
+                    <option value="Analytical">分析性(Analytical)-对数据和理论进行批判性评估和详细检查</option>
+                    <option value="Persuasive">有说服力的(Persuasive)-使观众信服一个特定的观点或论点</option>
+                    <option value="Informative">翔实的(Informative)-提供一个主题的清晰和全面的信息
                     </option>
-                    <option value="Explanatory">Explanatory - Clarifying complex concepts and processes</option>
-                    <option value="Descriptive">Descriptive - Detailed depiction of phenomena, experiments, or case
-                        studies</option>
-                    <option value="Critical">Critical - Judging the validity and relevance of the research and its
-                        conclusions</option>
-                    <option value="Comparative">Comparative - Juxtaposing different theories, data, or methods to
-                        highlight differences and similarities</option>
-                    <option value="Speculative">Speculative - Exploring hypotheses and potential implications or future
-                        research directions</option>
-                    <option value="Reflective">Reflective - Considering the research process and personal insights or
-                        experiences</option>
-                    <option value="Narrative">Narrative - Telling a story to illustrate research findings or
-                        methodologies</option>
-                    <option value="Humorous">Humorous - Light-hearted and engaging, usually to make the content more
-                        relatable</option>
-                    <option value="Optimistic">Optimistic - Highlighting positive findings and potential benefits
+                    <option value="Explanatory">解释性(Explanatory)-阐明复杂的概念和过程</option>
+                    <option value="Descriptive">描述性(Descriptive)-对现象、实验或案例研究的详细描述</option>
+                    <option value="Critical">批判性(Critical)-判断所研究的主题及其结论的有效性和相关性</option>
+                    <option value="Comparative">比较(Comparative)-并列不同的理论、数据或方法，以突出差异和相似之处</option>
+                    <option value="Speculative">推测(Speculative)-探索假设和潜在的影响或未来的研究方向</option>
+                    <option value="Reflective">反思(Reflective)-考虑研究过程和个人见解或经验</option>
+                    <option value="Narrative">叙述(Narrative)-通过讲述故事来说明研究结果或方法</option>
+                    <option value="Humorous">幽默(Humorous)——轻松愉快，引人入胜，通常使内容更有亲和力</option>
+                    <option value="Optimistic">乐观(Optimistic)——强调积极的发现和潜在的好处
                     </option>
-                    <option value="Pessimistic">Pessimistic - Focusing on limitations, challenges, or negative outcomes
+                    <option value="Pessimistic">悲观(Pessimistic)——关注局限、挑战或负面结果
                     </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="report_source" class="agent-question">What sources would you like me to research
-                    from?</label>
-                <p class="text-left mt-0 pt-0" style="font-size: 0.7rem;">You can now do research on local documents as
-                    well. Please make sure to add the DOC_PATH env variable pointing to your documents folder.</p>
+                <label for="report_source" class="agent-question">你希望我从哪些来源进行研究？</label>
+                <p class="text-left mt-0 pt-0" style="font-size: 0.7rem;">您现在也可以对本地文档进行研究。请确保添加指向您的文档文件夹的 DOC_PATH env 变量。</p>
                 <select name="report_source" class="form-control" required>
-                    <option value="web">The Web</option>
-                    <option value="local">My Documents</option>
-                    <option value="hybrid">Hybrid</option>
+                    <option value="web">网络</option>
+                    <option value="local">我的文档</option>
+                    <option value="hybrid">混合</option>
                 </select>
             </div>
             <input type="submit" value="Research" class="btn btn-primary button-padding">
@@ -132,8 +165,7 @@
 
         <div class="margin-div">
             <h2>Agent Output</h2>
-            <p class="mt-2 text-left" style="font-size: 0.8rem;">An agent tailored specifically to your task
-                will be generated to provide the most precise and relevant research results.</p>
+            <p class="mt-2 text-left" style="font-size: 0.8rem;">专为您的任务量身定制的代理 将生成最精确和最相关的研究结果。</p>
             <div id="output"></div>
         </div>
         <div class="margin-div">
@@ -142,18 +174,39 @@
             <div id="reportActions">
                 <div class="alert alert-info" role="alert" id="status"></div>
                 <a id="copyToClipboard" onclick="GPTResearcher.copyToClipboard()" class="btn btn-secondary mt-3"
-                    style="margin-right: 10px;">Copy to clipboard (markdown)</a>
+                    style="margin-right: 10px;">复制到剪贴板(markdown)</a>
                 <a id="downloadLinkMd" href="#" class="btn btn-secondary mt-3" style="margin-right: 10px;"
-                    target="_blank">Download as Markdown</a>
+                    target="_blank">下载Markdown文件</a>
                 <a id="downloadLink" href="#" class="btn btn-secondary mt-3" style="margin-right: 10px;"
-                    target="_blank">Download as PDF</a>
-                <a id="downloadLinkWord" href="#" class="btn btn-secondary mt-3" target="_blank">Download as Docx</a>
+                    target="_blank">下载PDF文件</a>
+                <a id="downloadLinkWord" href="#" class="btn btn-secondary mt-3" target="_blank">下载Docx文件</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="file-manager">
+            <h2>文件管理</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="fileInput">上传文件</label>
+                    <input type="file" id="fileInput" name="files" class="form-control" required multiple>
+                </div>
+                <button type="submit" class="btn btn-primary">上传</button>
+            </form>
+            <div class="file-list" id="fileList">
+                <!-- 文件列表将在这里显示 -->
+            </div>
+            <div class="pagination" id="pagination">
+                <!-- 分页按钮将在这里显示 -->
+            </div>
+        </div>
             </div>
         </div>
     </main>
 
     <footer>
-        <p>GPT Researcher &copy; 2024 | <a target="_blank" href="https://github.com/assafelovic/gpt-researcher">GitHub
+        <p>GPT Researcher &copy; 2024 | <a target="_blank" href="https://research-test.onesmart.vip">Research
                 Page</a></p>
     </footer>
 
@@ -191,6 +244,83 @@
                 input.value = '';
             }
         });
+    
+    // 文件管理功能
+    const fileManager = (() => {
+        const fileList = document.getElementById('fileList');
+        const pagination = document.getElementById('pagination');
+        const uploadForm = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('fileInput');
+
+        const fetchFiles = async (page = 1) => {
+            const response = await fetch(`/files?page=${page}`);
+            const data = await response.json();
+            renderFileList(data.files);
+            renderPagination(data.totalPages, page);
+        };
+
+        const renderFileList = (files) => {
+            fileList.innerHTML = '';
+            files.forEach(file => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `<span>${file.name}</span>
+                                      <button onclick="fileManager.deleteFile('${file.name}')">删除</button>`;
+                fileList.appendChild(fileItem);
+            });
+        };
+
+        const renderPagination = (totalPages, currentPage) => {
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const pageItem = document.createElement('button');
+                pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                pageItem.innerText = i;
+                pageItem.addEventListener('click', () => fetchFiles(i));
+                pagination.appendChild(pageItem);
+            }
+        };
+
+        const uploadFile = async (files) => {
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+            const result = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+            if (result.ok && result.status === 200 && (await result.json()).code === 200) {
+                alert('文件上传成功！');
+            }
+            fetchFiles();
+        };
+
+        const deleteFile = async (fileName) => {
+            await fetch(`/files/${fileName}`, {
+                method: 'DELETE'
+            });
+            fetchFiles();
+        };
+
+        uploadForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const files = fileInput.files;
+            if (files && files.length > 0) {
+                uploadFile(files);
+            }
+        });
+
+        return {
+            fetchFiles,
+            deleteFile
+        };
+    })();
+
+    // 初始化文件管理器
+    document.addEventListener('DOMContentLoaded', () => {
+        fileManager.fetchFiles();
+    });
 
 </script>
 </body>
