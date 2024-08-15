@@ -76,7 +76,7 @@ input, select, #output, #reportContainer {
 }
 
 input:hover, input:focus, select:hover, select:focus {
-    background-color: #676869;
+    background-color: #dfe4ea;
     border: 1px solid rgba(104, 102, 102, 0.5);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
