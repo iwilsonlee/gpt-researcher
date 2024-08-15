@@ -24,11 +24,11 @@ body {
 }
 
 a {
-    color: rgb(170, 179, 244);
+    color: #2196f3;
 }
 
 a:hover {
-    color: #212529;
+    color: #437697;
 }
 
 
@@ -132,7 +132,7 @@ footer {
 }
 
 .agent_response {
-    background-color: #747d8c;
+    background-color: #a3c1f3;
     margin: 10px;
     padding: 10px;
     border-radius: 12px;
