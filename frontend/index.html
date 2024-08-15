@@ -94,6 +94,27 @@
             transition: all .3s ease-in-out;
             color: #fff;
         }
+
+        /* 遮罩层样式 */
+        #uploadOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            z-index: 9999;
+        }
+
+        /* 动态点样式 */
+        .dots {
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -216,6 +237,11 @@
         </div>
     </main>
 
+    <!-- 遮罩层 -->
+    <div id="uploadOverlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; color: white; display: flex; justify-content: center; align-items: center; font-size: 1.5rem;">
+        正在上传文件，请稍后<span id="dots">...</span>
+    </div>
+
     <footer>
         <p>GPT Researcher &copy; 2024 | <a target="_blank" href="https://research-test.onesmart.vip">Research
                 Page</a></p>
@@ -264,6 +290,10 @@
         const pagination = document.getElementById('pagination');
         const uploadForm = document.getElementById('uploadForm');
         const fileInput = document.getElementById('fileInput');
+        const uploadOverlay = document.getElementById('uploadOverlay');
+        const dots = document.getElementById('dots');
+
+        let dotsInterval;
 
         const fetchFiles = async (page = 1) => {
             const response = await fetch(`/files?page=${page}`);
@@ -294,19 +324,42 @@
             }
         };
 
+        const showOverlay = () => {
+            uploadOverlay.style.display = 'flex';
+            let dotCount = 0;
+            dotsInterval = setInterval(() => {
+                dots.textContent = '.'.repeat(dotCount % 4 + 1);
+                dotCount++;
+            }, 500);
+        };
+
+        const hideOverlay = () => {
+            clearInterval(dotsInterval);
+            uploadOverlay.style.display = 'none';
+        };
+
         const uploadFile = async (files) => {
+            showOverlay();
             const formData = new FormData();
             for (let i = 0; i < files.length; i++) {
                 formData.append('files', files[i]);
             }
-            const result = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
-            if (result.ok && result.status === 200 && (await result.json()).code === 200) {
-                alert('文件上传成功！');
+            try {
+                const result = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (result.ok && result.status === 200 && (await result.json()).code === 200) {
+                    alert('文件上传成功！');
+                } else {
+                    alert('文件上传失败，请重试！');
+                }
+            } catch (error) {
+                alert('上传过程中出现错误，请重试！');
+            } finally {
+                hideOverlay();
+                fetchFiles();
             }
-            fetchFiles();
         };
 
         const deleteFile = async (fileName) => {
@@ -334,6 +387,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         fileManager.fetchFiles();
     });
+
+
 
 </script>
 </body>
