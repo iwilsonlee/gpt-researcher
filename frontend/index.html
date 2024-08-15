@@ -363,6 +363,9 @@
         };
 
         const deleteFile = async (fileName) => {
+            if (!confirm(`确定要删除文件 "${fileName}" 吗？`)) {
+                return;
+            }
             await fetch(`/files/${fileName}`, {
                 method: 'DELETE'
             });
