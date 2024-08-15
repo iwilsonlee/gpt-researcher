@@ -3,7 +3,9 @@ services:
   gpt-researcher:
     pull_policy: build
     image: gptresearcher/gpt-researcher
-    build: ./
+    build: 
+      dockerfile: Dockerfile.customize
+      context: ./
     environment: 
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       TAVILY_API_KEY: ${TAVILY_API_KEY}
@@ -11,6 +13,7 @@ services:
       DOC_PATH: ./my-docs
     volumes:
       - ./my-docs:/usr/src/app/my-docs
+      - ./frontend:/usr/src/app/frontend
     restart: always
     ports:
       - 8000:8000
