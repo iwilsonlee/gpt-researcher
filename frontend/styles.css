@@ -150,6 +150,7 @@ footer {
 
 #reportContainer {
     font-family: 'Georgia', 'Times New Roman', Times, "Courier New", serif;
+    font-size: 18px !important;
     background-color: rgb(169 171 172 / 10%);
     font-family: 'Times New Roman', Times, "Courier New", serif;
     border: none;
